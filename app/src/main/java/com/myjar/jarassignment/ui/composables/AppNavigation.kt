@@ -1,5 +1,7 @@
 package com.myjar.jarassignment.ui.composables
 
+import android.util.Log
+import android.widget.EditText
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,7 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -43,8 +48,6 @@ fun AppNavigation(
                     if (!currRoute.contains("item_detail")) {
                         navController.navigate("item_detail/${navigate.value}")
                     }},
-                navigate = navigate,
-                navController = navController
             )
         }
         composable("item_detail/{itemId}") { backStackEntry ->
@@ -58,27 +61,45 @@ fun AppNavigation(
 fun ItemListScreen(
     viewModel: JarViewModel,
     onNavigateToDetail: (String) -> Unit,
-    navigate: MutableState<String>,
-    navController: NavHostController
 ) {
     val items = viewModel.listStringData.collectAsState()
 
-    if (navigate.value.isNotBlank()) {
+    val query = remember { mutableStateOf("") }
 
+    val filteredItems = items.value.filter { item ->
+        item.name.contains(query.value, ignoreCase = true)
     }
-    LazyColumn(
+
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
     ) {
-        items(items.value) { item ->
-            ItemCard(
-                item = item,
-                onClick = { onNavigateToDetail(item.id) }
-            )
-            Spacer(modifier = Modifier.height(8.dp))
+        // Search bar
+        TextField(
+            value =query.value ,
+            onValueChange = { query.value = it },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 16.dp, start = 16.dp, end=16.dp)
+        )
+
+        // items
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            items(filteredItems) { item ->
+                ItemCard(
+                    item = item,
+                    onClick = { onNavigateToDetail(item.id) }
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
     }
+
+
 }
 
 @Composable
