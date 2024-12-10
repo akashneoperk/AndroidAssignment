@@ -62,10 +62,13 @@ fun ItemListScreen(
     viewModel: JarViewModel,
     onNavigateToDetail: (String) -> Unit,
 ) {
+    // All items fetched from the API
     val items = viewModel.listStringData.collectAsState()
 
+    // Search Query
     val query = remember { mutableStateOf("") }
 
+    // filtered Items
     val filteredItems = items.value.filter { item ->
         item.name.contains(query.value, ignoreCase = true)
     }
@@ -110,7 +113,10 @@ fun ItemCard(item: ComputerItem, onClick: () -> Unit) {
             .padding(8.dp)
             .clickable { onClick() }
     ) {
+        // item name
         Text(text = item.name, fontWeight = FontWeight.Bold, color = Color.White)
+
+        // items specifications
         if(item.data!=null){
             if (item.data.color !=null) {
                 Text(text = "Color: ${item.data.color}", color = Color.White)
