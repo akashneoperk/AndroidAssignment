@@ -38,7 +38,11 @@ fun AppNavigation(
         composable("item_list") {
             ItemListScreen(
                 viewModel = viewModel,
-                onNavigateToDetail = { selectedItem -> navigate.value = selectedItem },
+                onNavigateToDetail = { selectedItem -> navigate.value = selectedItem
+                    val currRoute = navController.currentDestination?.route.orEmpty()
+                    if (!currRoute.contains("item_detail")) {
+                        navController.navigate("item_detail/${navigate.value}")
+                    }},
                 navigate = navigate,
                 navController = navController
             )
@@ -60,10 +64,7 @@ fun ItemListScreen(
     val items = viewModel.listStringData.collectAsState()
 
     if (navigate.value.isNotBlank()) {
-        val currRoute = navController.currentDestination?.route.orEmpty()
-        if (!currRoute.contains("item_detail")) {
-            navController.navigate("item_detail/${navigate.value}")
-        }
+
     }
     LazyColumn(
         modifier = Modifier
