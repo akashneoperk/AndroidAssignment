@@ -88,9 +88,45 @@ fun ItemCard(item: ComputerItem, onClick: () -> Unit) {
             .padding(8.dp)
             .clickable { onClick() }
     ) {
-        Text(text = item.name, fontWeight = FontWeight.Bold, color = Color.Transparent)
+        Text(text = item.name, fontWeight = FontWeight.Bold, color = Color.White)
+        if(item.data!=null){
+            if (item.data.color !=null) {
+                Text(text = "Color: ${item.data.color}", color = Color.White)
+            }
+            if (item.data.capacity !=null) {
+                Text(text = "Capacity: ${item.data.capacity}", color = Color.White)
+            }
+            if (item.data.price !=null) {
+                Text(text = "Price: ${item.data.price}", color = Color.White)
+            }
+            if (item.data.capacityGB !=null) {
+                Text(text = "Capacity GB: ${item.data.capacityGB}", color = Color.White)
+            }
+            if (item.data.screenSize !=null) {
+                Text(text = "ScreenSize: ${item.data.screenSize}", color = Color.White)
+            }
+            if (item.data.description !=null) {
+                Text(text = "Description: ${item.data.description}", color = Color.White)
+            }
+            if (item.data.generation !=null) {
+                Text(text = "Generation: ${item.data.generation}", color = Color.White)
+            }
+            if (item.data.strapColour !=null) {
+                Text(text = "Strap Color: ${item.data.strapColour}", color = Color.White)
+            }
+            if (item.data.caseSize !=null) {
+                Text(text = "Case Size: ${item.data.caseSize}", color = Color.White)
+            }
+            if (item.data.cpuModel !=null) {
+                Text(text = "CPU Model: ${item.data.cpuModel}", color = Color.White)
+            }
+            if (item.data.hardDiskSize !=null) {
+                Text(text = "HardDisk Size: ${item.data.hardDiskSize}", color = Color.White)
+            }
+        }
     }
 }
+
 
 @Composable
 fun ItemDetailScreen(itemId: String?) {

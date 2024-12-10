@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 class JarViewModel : ViewModel() {
 
     private val _listStringData = MutableStateFlow<List<ComputerItem>>(emptyList())
+
     val listStringData: StateFlow<List<ComputerItem>>
         get() = _listStringData
 
@@ -20,7 +21,9 @@ class JarViewModel : ViewModel() {
 
     fun fetchData() {
         viewModelScope.launch {
-            repository.fetchResults()
+            repository.fetchResults().collect { data ->
+                _listStringData.value = data
+            }
         }
     }
 }
